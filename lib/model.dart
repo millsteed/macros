@@ -16,7 +16,7 @@ macro class Model implements ClassDeclarationsMacro {
     MemberDeclarationBuilder builder,
   ) async {
     final className = classDeclaration.identifier.name;
-    
+
     final fields = await builder.fieldsOf(classDeclaration);
 
     final fieldNames = <String>[];
@@ -71,8 +71,7 @@ macro class Model implements ClassDeclarationsMacro {
         if (_baseTypes.contains(fieldTypes[fieldName])) ...[
           "$fieldName: json['$fieldName'] as ${fieldTypes[fieldName]},"
               .indent(6),
-        ] else if (_collectionTypes
-            .contains(fieldTypes[fieldName]?.split('<').first)) ...[
+        ] else if (_collectionTypes.contains(fieldTypes[fieldName])) ...[
           "$fieldName: (json['$fieldName'] as List<dynamic>)".indent(6),
           '.whereType<Map<String, dynamic>>()'.indent(10),
           '.map(${fieldGenerics[fieldName]?.first}.fromJson)'.indent(10),
